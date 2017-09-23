@@ -1,0 +1,17 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+body {
+  background: white;
+}
+body #root {
+  color: blue;
+  width: 400px;
+  height: 300px;
+  background: white;
+  border-radius: 20px;
+}
+body #root img {
+  width: 100%;
+}
