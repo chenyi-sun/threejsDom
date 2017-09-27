@@ -59,7 +59,7 @@ function initVertexBuffers(gl) {
     console.log('Failed to create the buffer object');
     return -1;
   }
-
+  
   // Bind the buffer object to target
   gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
   // Write date into the buffer object

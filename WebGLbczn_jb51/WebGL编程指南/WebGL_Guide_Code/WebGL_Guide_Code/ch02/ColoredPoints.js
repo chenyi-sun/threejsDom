@@ -76,7 +76,7 @@ function click(ev, gl, canvas, a_Position, u_FragColor) {
   } else {                         // Others
     g_colors.push([1.0, 1.0, 1.0, 1.0]);  // White
   }
-
+  
   // Clear <canvas>
   gl.clear(gl.COLOR_BUFFER_BIT);
 
