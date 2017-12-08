@@ -4,7 +4,7 @@ var VSHADER_SOURCE =
   'attribute vec4 a_Position;\n' +
   'void main() {\n' +
   '  gl_Position = a_Position;\n' +
-  '  gl_PointSize = 10.0;\n' +
+  // '  gl_PointSize = 10.0;\n' +
   '}\n';
 
 // Fragment shader program
@@ -23,7 +23,7 @@ function main() {
     console.log('Failed to get the rendering context for WebGL');
     return;
   }
-
+  
   // Initialize shaders
   if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) {
     console.log('Failed to intialize shaders.');
@@ -44,14 +44,14 @@ function main() {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   // Draw three points
-  gl.drawArrays(gl.POINTS, 0, n);
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, n);
 }
 
 function initVertexBuffers(gl) {
   var vertices = new Float32Array([
-    0.0, 0.5,   -0.5, -0.5,   0.5, -0.5
+    -0.5, 0.5,   -0.5, -0.5,   0.5, 0.5 ,  0.5, -0.5   
   ]);
-  var n = 3; // The number of vertices
+  var n = 4; // The number of vertices
 
   // Create a buffer object
   var vertexBuffer = gl.createBuffer();
