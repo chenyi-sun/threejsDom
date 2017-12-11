@@ -9,23 +9,15 @@
     <canvas id="webgl" width="400" height="400">
         your bower cannot accept canvas
     </canvas>
-    <p >
-       (page49) 代码很清楚了，不用解释什么了.click函数还可以继续优化。
+    <p>
+       (page 59页)随机unform颜色变量，把片源找色器的变量提取出来，uniform变量，一致的变量
        <br/>
-       PS：canvas.onmousedown = function(ev){<br/>
-           &nbsp; &nbsp;var x = ev.clientX;<br/>
-           &nbsp;&nbsp;var y = ev.clientY;<br/>
-           &nbsp;&nbsp;var target = ev.target.getBoundingClientRect();获取 包围(整体)客户端矩形<br/>
-           &nbsp;&nbsp; <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect">https://developer.mozilla.org/zh-CN/docs/Web/API/Element/getBoundingClientRect</a>
-            <br/>
-            &nbsp;&nbsp;target.left;<br/>
-            &nbsp;&nbsp;target.top;<br/>
-       }<br/>
+       PS：
+       <br/>
     </p>
     <hr/>
     <xmp>
-        // Vertex shader program
-        var VSHADER_SOURCE =
+       var VSHADER_SOURCE =
         'attribute vec4 a_Position;\n' +
         'void main() {\n' +
         '  gl_Position = a_Position;\n' +
@@ -34,12 +26,14 @@
 
         // Fragment shader program
         var FSHADER_SOURCE =
+        'precision mediump float;\n' +
+        'uniform vec4 u_FragColor;\n' +  // uniform変数
         'void main() {\n' +
-        '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' +
+        '  gl_FragColor = u_FragColor;\n' +
         '}\n';
 
         function main() {
-        // Retrieve canvas element
+        // Retrieve <canvas> element
         var canvas = document.getElementById('webgl');
 
         // Get the rendering context for WebGL
@@ -62,32 +56,56 @@
             return;
         }
 
-        // Register function (event handler) to be called on a mouse press
-        // Specify the color for clearing canvas
-        gl.clearColor(0.0, 0.0, 0.0, 1.0);
-
-        // Clear canvas
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        canvas.onmousedown = function(ev){ click(ev, gl, canvas, a_Position); };
+        // Get the storage location of u_FragColor
+        var u_FragColor = gl.getUniformLocation(gl.program, 'u_FragColor');
+        if (!u_FragColor) {
+            console.log('Failed to get the storage location of u_FragColor');
+            return;
         }
 
-        var g_points = []; // The array for the position of a mouse press
-        function click(ev, gl, canvas, a_Position) {
+        // Register function (event handler) to be called on a mouse press
+        canvas.onmousedown = function(ev){ click(ev, gl, canvas, a_Position, u_FragColor) };
+
+        // Specify the color for clearing <canvas>
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+
+        // Clear <canvas>
+        gl.clear(gl.COLOR_BUFFER_BIT);
+        }
+
+        var g_points = [];  // The array for the position of a mouse press
+        var g_colors = [];  // The array to store the color of a point
+        function click(ev, gl, canvas, a_Position, u_FragColor) {
         var x = ev.clientX; // x coordinate of a mouse pointer
         var y = ev.clientY; // y coordinate of a mouse pointer
-        var rect = ev.target.getBoundingClientRect() ;
+        var rect = ev.target.getBoundingClientRect();
+
         x = ((x - rect.left) - canvas.width/2)/(canvas.width/2);
         y = (canvas.height/2 - (y - rect.top))/(canvas.height/2);
-        // Store the coordinates to g_points array
-        g_points.push(x); g_points.push(y);
 
-        // Clear canvas
+        // Store the coordinates to g_points array
+        g_points.push([x, y]);
+        // Store the coordinates to g_points array
+        if (x >= 0.0 && y >= 0.0) {      // First quadrant
+            g_colors.push([1.0, 0.0, 0.0, 1.0]);  // Red
+        } else if (x < 0.0 && y < 0.0) { // Third quadrant
+            g_colors.push([0.0, 1.0, 0.0, 1.0]);  // Green
+        } else {                         // Others
+            g_colors.push([1.0, 1.0, 1.0, 1.0]);  // White
+        }
+        
+        // Clear <canvas>
         gl.clear(gl.COLOR_BUFFER_BIT);
 
         var len = g_points.length;
-        for(var i = 0; i < len; i += 2) {
+        for(var i = 0; i < len; i++) {
+            var xy = g_points[i];
+            var rgba = g_colors[i];
+
             // Pass the position of a point to a_Position variable
-            gl.vertexAttrib3f(a_Position, g_points[i], g_points[i+1], 0.0);
+            gl.vertexAttrib3f(a_Position, xy[0], xy[1], 0.0);
+            // Pass the color of a point to u_FragColor variable
+            gl.uniform4f(u_FragColor, rgba[0], rgba[1], rgba[2], rgba[3]);
             // Draw
             gl.drawArrays(gl.POINTS, 0, 1);
         }
