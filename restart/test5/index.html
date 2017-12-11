@@ -12,7 +12,12 @@
     <p>
        (page 67页-78页) 开启缓冲区 VertexBuffers，将多个顶点坐标放进缓冲区，然后一次渲染出来,三个点
        <br/>
-       PS：
+       1.创建缓冲区。(page70页开始)buffer = .createBuffer
+       2.绑定缓冲区。 bindBuffer(array, buffer);
+       3.把数据放入缓冲区。bufferDate(array, vertexies, 2, 0)
+       4.获取a_Position的物理位置 a_Position = getAttribLocation();
+       5.将顶点缓冲区的数据放入a_Position setAttribPoints(a_Position,gl.float,2,0,0);
+       6.开启缓冲区和a_Position的连接 enableVertexAttribArray();
        <br/>
     </p>
     <hr/>
