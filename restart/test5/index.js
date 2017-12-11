@@ -3,7 +3,7 @@ var VSHADER_SOURCE =
   'attribute vec4 a_Position;\n' +
   'void main() {\n' +
   '  gl_Position = a_Position;\n' +
-  // '  gl_PointSize = 10.0;\n' +
+  '  gl_PointSize = 10.0;\n' +
   '}\n';
 
 // Fragment shader program
@@ -43,7 +43,7 @@ function main() {
   gl.clear(gl.COLOR_BUFFER_BIT);
 
   // Draw three points
-  gl.drawArrays(gl.TRIANGLE_FAN, 0, n);
+  gl.drawArrays(gl.POINTS, 0, n);
   //gl.POINTS 点
   //gl.TRIANGLE_FAN 面 
   
