@@ -1,0 +1,127 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body onload="main()">
+    <canvas id="webgl" width="400" height="400">
+        your bower cannot accept canvas
+    </canvas>
+    <p>
+       (page 91页-93页) RotatedTriangle&nbsp;旋转三角形(这章需要自己再过一遍思路,手敲一遍，特别是三角函数那一块) 
+       <br/>
+       PS：这章不是重点，是为了说这样写很复杂，不如用变换矩阵
+       <br/>
+       旋转值是正值的时候，是逆时针旋转(91页)
+       <br/>
+       x' = x*cos B - y*sin B;
+       <br/>
+       y' = x*sin B - y*cos B;
+       <br/>
+       (page95)，角度一样的情况下，像BUFFER传的正弦和余弦值任然是两个变量，因为js算好了以后放进去效率更高
+       <br/>
+       uniform变量
+       <br/>
+       a_Position可以拆出来3个值(a_Position.x和a_Position.y)值和a_Position.z,a_Position.w值。
+       <br/>
+    </p>
+    <hr/>
+    <xmp>
+       var VSHADER_SOURCE =
+  'attribute vec4 a_Position;\n' +
+  'uniform vec4 u_Translation;\n' +
+  'void main() {\n' +
+  '  gl_Position = a_Position + u_Translation;\n' +
+  '}\n';
+
+// Fragment shader program
+var FSHADER_SOURCE =
+  'void main() {\n' +
+  '  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n' +
+  '}\n';
+
+// The translation distance for x, y, and z direction
+var Tx = 0.5, Ty = 0.5, Tz = 0.0;
+
+function main() {
+  // Retrieve <canvas> element
+  var canvas = document.getElementById('webgl');
+
+  // Get the rendering context for WebGL
+  var gl = getWebGLContext(canvas);
+  if (!gl) {
+    console.log('Failed to get the rendering context for WebGL');
+    return;
+  }
+
+  // Initialize shaders
+  if (!initShaders(gl, VSHADER_SOURCE, FSHADER_SOURCE)) {
+    console.log('Failed to intialize shaders.');
+    return;
+  }
+
+  // Write the positions of vertices to a vertex shader
+  var n = initVertexBuffers(gl);
+  if (n < 0) {
+    console.log('Failed to set the positions of the vertices');
+    return;
+  }
+
+  // Pass the translation distance to the vertex shader
+  var u_Translation = gl.getUniformLocation(gl.program, 'u_Translation');
+  if (!u_Translation) {
+    console.log('Failed to get the storage location of u_Translation');
+    return;
+  }
+  gl.uniform4f(u_Translation, Tx, Ty, Tz, -0.2);
+
+  // Specify the color for clearing <canvas>
+  gl.clearColor(0, 0, 0, 1);
+
+  // Clear <canvas>
+  gl.clear(gl.COLOR_BUFFER_BIT);
+
+  // Draw the rectangle
+  gl.drawArrays(gl.TRIANGLES, 0, n);
+}
+
+function initVertexBuffers(gl) {
+  var vertices = new Float32Array([
+    0, 0.5,   -0.5, -0.5,   0.5, -0.5
+  ]);
+  var n = 3; // The number of vertices
+
+  // Create a buffer object
+  var vertexBuffer = gl.createBuffer();
+  if (!vertexBuffer) {
+    console.log('Failed to create the buffer object');
+    return -1;
+  }
+
+  // Bind the buffer object to target
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+  // Write date into the buffer object
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+  // Assign the buffer object to the attribute variable
+  var a_Position = gl.getAttribLocation(gl.program, 'a_Position');
+  if (a_Position < 0) {
+    console.log('Failed to get the storage location of a_Position');
+    return -1;
+  }
+  gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+
+  // Enable the assignment to a_Position variable
+  gl.enableVertexAttribArray(a_Position);
+
+  return n;
+}
+    </xmp>
+</body>
+<script src="../lib/webgl-utils.js"></script>
+<script src="../lib/webgl-debug.js"></script>
+<script src="../lib/cuon-utils.js"></script>
+<script src="./index.js"></script>
+</html>
