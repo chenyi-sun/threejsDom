@@ -44,7 +44,7 @@ function main() {
     console.log('Failed to get the storage location of u_Translation');
     return;
   }
-  gl.uniform4f(u_Translation, Tx, Ty, Tz, -0.2);
+  gl.uniform4f(u_Translation, Tx, Ty, Tz, 0.0);
 
   // Specify the color for clearing <canvas>
   gl.clearColor(0, 0, 0, 1);
