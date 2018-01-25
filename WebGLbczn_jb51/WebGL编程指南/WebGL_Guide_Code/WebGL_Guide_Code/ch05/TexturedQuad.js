@@ -127,8 +127,10 @@ function initTextures(gl, n) {
 function loadTexture(gl, n, texture, u_Sampler, image) {
   gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1); // Flip the image's y axis
   // Enable texture unit0
+
   gl.activeTexture(gl.TEXTURE0);
   // Bind the texture object to the target
+  
   gl.bindTexture(gl.TEXTURE_2D, texture);
 
   // Set the texture parameters
