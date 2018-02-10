@@ -50,20 +50,19 @@
 
             var light;
             function initLight() {
-                light = new THREE.AmbientLight(0x00FF00);
-                light.position.set(100, 100, 200);
+                light = new THREE.DirectionalLight(0xFF0000);
+                light.position.set(0, 0, 1);
                 scene.add(light);
             }
 
             var cube;
             function initObject() {
-                var geometry = new THREE.CubeGeometry(200, 100, 50 ,4 ,4);
-                var material = new THREE.MeshLambertMaterial({color: 0x008800});
+                var geometry = new THREE.CubeGeometry(200, 100, 50 );
+                var material = new THREE.MeshLambertMaterial({color: 0xFFFFFF});
                 var cube = new THREE.Mesh(geometry, material); 
                 cube.position = new THREE.Vector3(0, 0, 0);
                 scene.add(cube);
             }
-
             function threeStart() {
                 initThree();
                 initCamera();
