@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="./../three.js"></script>
+<style type="text/css">
+            div#canvas-frame {
+                border: none;
+                cursor: pointer;
+                width: 100%;
+                height: 600px;
+                background-color: #EEEEEE;
+            }
+
+        </style>
+        
+    </head>
+
+    <body onload="threeStart();">
+        <div id="canvas-frame"></div>
+    </body>
+    <script>
+            var renderer;
+            function initThree(){ 
+               width = document.getElementById('canvas-frame').clientWidth;
+               height = document.getElementById('canvas-frame').clientHeight;
+               renderer = new THREE.WebGLRender({
+                   antialias: true
+               });
+               renderer.setSize(width, height);
+               document.getElementById('canvas-frame').appendChild(renderer.domElement);
+               render.setClearColor(x0fff000, 1.0);
+            }
+            var camera;
+            function initCamera(){
+                
+            }
+            var scene;
+            function initScene(){
+
+            }
+            var light;
+            function initLight(){
+
+            }
+
+            var cube;
+            function initObject(){
+
+            }
+            function threestart(){
+                initThree(); //初始化渲染器
+                initCamera(); //初始化照相机
+                initScene(); //初始化场景
+                initLight(); //初始化灯光
+                initObject(); //添加场景元素
+                renderer.clear();
+                renderer.render(scene, camere);
+            }
+
+        </script>
+</html>
