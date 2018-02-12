@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>方向光</title>
+    <title>方向光和环境光混合</title>
     <script src="./../three.js"></script>
 <style type="text/css">
     div#canvas-frame {
@@ -49,6 +49,14 @@
 
             var light;
             function initLight() {
+                
+
+                light = new THREE.AmbientLight(0x00FF00);
+
+                light.position.set(100, 100, 200);
+
+                scene.add(light);
+
                 light = new THREE.DirectionalLight(0xFF0000, 1);
                 light.position.set(10, 0, 5);
                 scene.add(light);

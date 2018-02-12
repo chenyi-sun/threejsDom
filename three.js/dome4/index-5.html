@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>方向光</title>
+    <title>点光源</title>
     <script src="./../three.js"></script>
 <style type="text/css">
     div#canvas-frame {
@@ -49,9 +49,13 @@
 
             var light;
             function initLight() {
-                light = new THREE.DirectionalLight(0xFF0000, 1);
-                light.position.set(10, 0, 5);
-                scene.add(light);
+              light = new THREE.PointLight(0xFF0000);
+              light.position.set(0,0, -50);
+              scene.add(light);
+
+              //   light2 = new THREE.DirectionalLight(0x00FF00);
+              //   light2.position.set(1, 0, 0);
+              //   scene.add(light2);
             }
 
             var cube;
@@ -75,14 +79,17 @@
                 mesh4.position.set(0, 0,-150);
                 scene.add(mesh4);
 
-                var mesh5 = new THREE.Mesh( geometry,material);
-                mesh5.position.set(250, 0, 0);
-                scene.add(mesh5);
+                // var mesh5 = new THREE.Mesh( geometry,material);
+                // mesh5.position.set(250, 0, 0);
+                // scene.add(mesh5);
 
                 var mesh6 = new THREE.Mesh( geometry,material);
                 mesh6.position.set(-250, 0, 0);
                 scene.add(mesh6);
 
+                var mesh7 = new THREE.Mesh( geometry,material);
+                mesh7.position.set(0, 0, -400);
+                scene.add(mesh7);
             }
             function threeStart() {
                 initThree();
@@ -101,3 +108,5 @@
         <div id="canvas-frame"></div>
     </body>
 </html>
+<!-- bug: 点光源可以穿透第三个物体-->
+<!-- bug: 阴影要如何产生-->
